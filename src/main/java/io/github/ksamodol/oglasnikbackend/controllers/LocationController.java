@@ -1,5 +1,6 @@
 package io.github.ksamodol.oglasnikbackend.controllers;
 
+import io.github.ksamodol.oglasnikbackend.entity.location.CountyDTO;
 import io.github.ksamodol.oglasnikbackend.entity.location.Place;
 import io.github.ksamodol.oglasnikbackend.entity.location.PlaceDTO;
 import io.github.ksamodol.oglasnikbackend.services.LocationService;
@@ -13,7 +14,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("place")
+@RequestMapping("location")
 public class LocationController {
 
     private final LocationService locationService;
@@ -21,12 +22,20 @@ public class LocationController {
     public LocationController(LocationService locationService) {
         this.locationService = locationService;
     }
-    @GetMapping
+    @GetMapping(path = "/place")
     public List<PlaceDTO> findAllPlaces(){
         return locationService.findAllPlaces();
     }
-    @GetMapping(params = "countyId")
+
+    @GetMapping(path = "/place", params = "countyId")
     public List<PlaceDTO> findAllPlacesByCountyId(@RequestParam int countyId){
            return locationService.findAllPlacesByCountyId(countyId);
     }
+
+    @GetMapping(path = "/county")
+    public List<CountyDTO> findAllCounties(){
+        return locationService.findAllCounties();
+    }
+
+
 }

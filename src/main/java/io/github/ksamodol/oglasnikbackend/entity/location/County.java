@@ -8,7 +8,7 @@ import java.util.Objects;
 @Table(name = "county")
 public class County {
     @Id
-    private int id;
+    private Long id;
     @Column(name = "name")
     private String name;
     @OneToMany(mappedBy = "county", fetch=FetchType.EAGER)
@@ -17,7 +17,7 @@ public class County {
 
     public County() {
     }
-    public int getId() {
+    public Long getId() {
         return id;
     }
     public String getName() {
@@ -32,7 +32,7 @@ public class County {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         County county = (County) o;
-        return id == county.id &&
+        return Objects.equals(id, county.id) &&
                 Objects.equals(name, county.name) &&
                 Objects.equals(placeList, county.placeList);
     }

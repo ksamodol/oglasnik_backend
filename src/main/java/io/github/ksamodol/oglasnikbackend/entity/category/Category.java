@@ -1,12 +1,12 @@
 package io.github.ksamodol.oglasnikbackend.entity.category;
 
-import java.util.List;
+public enum Category {
+    PROPERTIES,
+    VEHICLES,
+    FOOD_AND_DRINKS,
+    ELECTRONICS,
+    SPORTS,
+    BOOKS,
+    ART
 
-public class Category {
-
-    private int id;
-    private String name;
-    private List<Category> subcategories;
-
-    
 }

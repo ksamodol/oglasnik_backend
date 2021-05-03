@@ -1,20 +1,25 @@
 package io.github.ksamodol.oglasnikbackend.entity.listing;
 
+import io.github.ksamodol.oglasnikbackend.entity.category.Category;
 import io.github.ksamodol.oglasnikbackend.entity.location.Place;
 
 
 import javax.persistence.*;
+import java.time.Instant;
 import java.util.Objects;
-
+//TODO: timestamp, user, category
 @Entity
-@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 public class Listing {
     @Id
     @GeneratedValue
-    private int id;
+    private Long id;
     private String title;
     private String description;
     private Condition condition;
+    private Instant timestampCreated;
+    @Enumerated(EnumType.STRING)
+    private Category category;
     @ManyToOne
     @JoinColumn(name = "placeId")
     private Place place;
@@ -22,11 +27,11 @@ public class Listing {
     public Listing() {
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -54,6 +59,22 @@ public class Listing {
         this.condition = condition;
     }
 
+    public Instant getTimestampCreated() {
+        return timestampCreated;
+    }
+
+    public void setTimestampCreated(Instant timestampCreated) {
+        this.timestampCreated = timestampCreated;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
+    }
+
     public Place getPlace() {
         return place;
     }
@@ -67,15 +88,17 @@ public class Listing {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Listing listing = (Listing) o;
-        return id == listing.id &&
+        return Objects.equals(id, listing.id) &&
                 Objects.equals(title, listing.title) &&
                 Objects.equals(description, listing.description) &&
                 condition == listing.condition &&
+                Objects.equals(timestampCreated, listing.timestampCreated) &&
+                category == listing.category &&
                 Objects.equals(place, listing.place);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, title, description, condition, place);
+        return Objects.hash(id, title, description, condition, timestampCreated, category, place);
     }
 }

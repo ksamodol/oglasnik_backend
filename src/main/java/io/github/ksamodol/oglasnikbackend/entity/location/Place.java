@@ -5,12 +5,12 @@ import io.github.ksamodol.oglasnikbackend.entity.listing.Listing;
 import javax.persistence.*;
 import java.util.List;
 import java.util.Objects;
-
+//TODO: listings?
 @Entity
 @Table(name = "place")
 public class Place {
     @Id
-    private int id;
+    private Long id;
 
     @Column(name = "name")
     private String name;
@@ -25,7 +25,7 @@ public class Place {
 
     public Place() {
     }
-    public int getId() {
+    public Long getId() {
         return id;
     }
     public String getName() {
@@ -43,7 +43,7 @@ public class Place {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Place place = (Place) o;
-        return id == place.id &&
+        return Objects.equals(id, place.id) &&
                 Objects.equals(name, place.name) &&
                 Objects.equals(county, place.county) &&
                 placeType == place.placeType;

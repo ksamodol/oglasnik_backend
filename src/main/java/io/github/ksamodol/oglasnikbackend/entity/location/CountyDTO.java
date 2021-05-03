@@ -1,10 +1,10 @@
 package io.github.ksamodol.oglasnikbackend.entity.location;
 
-public class PlaceDTO {
+public class CountyDTO {
     private Long id;
     private String name;
 
-    public PlaceDTO(Long id, String name) {
+    public CountyDTO(Long id, String name) {
         this.id = id;
         this.name = name;
     }
