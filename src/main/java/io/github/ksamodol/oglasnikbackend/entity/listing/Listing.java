@@ -2,6 +2,7 @@ package io.github.ksamodol.oglasnikbackend.entity.listing;
 
 import io.github.ksamodol.oglasnikbackend.entity.category.Category;
 import io.github.ksamodol.oglasnikbackend.entity.location.Place;
+import io.github.ksamodol.oglasnikbackend.security.User;
 
 
 import javax.persistence.*;
@@ -23,6 +24,9 @@ public class Listing {
     @ManyToOne
     @JoinColumn(name = "placeId")
     private Place place;
+    
+    @ManyToOne
+    private User user;
 
     public Listing() {
     }
@@ -83,6 +87,14 @@ public class Listing {
         this.place = place;
     }
 
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -94,11 +106,12 @@ public class Listing {
                 condition == listing.condition &&
                 Objects.equals(timestampCreated, listing.timestampCreated) &&
                 category == listing.category &&
-                Objects.equals(place, listing.place);
+                Objects.equals(place, listing.place) &&
+                Objects.equals(user, listing.user);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, title, description, condition, timestampCreated, category, place);
+        return Objects.hash(id, title, description, condition, timestampCreated, category, place, user);
     }
 }

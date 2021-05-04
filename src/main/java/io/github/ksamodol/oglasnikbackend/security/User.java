@@ -16,8 +16,7 @@ public class User {
     private String firstName, lastName;
     private String email;
     private Instant timestampCreated;
-    @OneToMany
-    @JoinColumn(name="userId")
+    @OneToMany(mappedBy = "user")
     private List<Listing> listings;
 
     public User() {

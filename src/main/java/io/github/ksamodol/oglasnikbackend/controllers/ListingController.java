@@ -24,4 +24,9 @@ public class ListingController {
         return listingService.findAllListings(page, size);
     }
 
+    @GetMapping("/property")
+    public List<ListingDTO> findAllPropertyListings(){
+
+        return null;
+    }
 }

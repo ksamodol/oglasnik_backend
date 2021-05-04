@@ -6,6 +6,9 @@ import io.github.ksamodol.oglasnikbackend.repository.ListingRepository;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import java.time.ZoneId;
+import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -24,6 +27,15 @@ public class ListingServiceImpl implements ListingService {
     }
 
     private ListingDTO mapListingToDTO(Listing listing){
-        return new ListingDTO(listing.getId(), listing.getTitle(), listing.getDescription(), listing.getCondition().toString(), listing.getPlace().getName());
+        return new ListingDTO(
+                listing.getId(),
+                listing.getTitle(),
+                listing.getDescription(),
+                listing.getCondition().name(),
+                DateTimeFormatter.ISO_LOCAL_DATE_TIME.withZone(ZoneId.from(ZoneOffset.UTC)).format(listing.getTimestampCreated()),
+                listing.getCategory().name(),
+                listing.getPlace().getName(),
+                listing.getUser().getUsername()
+        );
     }
 }
