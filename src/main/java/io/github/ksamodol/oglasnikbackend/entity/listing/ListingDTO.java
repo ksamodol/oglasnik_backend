@@ -1,5 +1,9 @@
 package io.github.ksamodol.oglasnikbackend.entity.listing;
 
+import java.time.ZoneId;
+import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
+
 public class ListingDTO {
     private Long id;
     private String title;
@@ -20,6 +24,16 @@ public class ListingDTO {
         this.category = category;
         this.placeName = placeName;
         this.userUsername = userUsername;
+    }
+    public <T extends Listing> ListingDTO(T listing){
+        this.id = listing.getId();
+        this.title = listing.getTitle();
+        this.description = listing.getDescription();
+        this.condition = listing.getCondition().name();
+        this.timestampCreated = DateTimeFormatter.ISO_LOCAL_DATE_TIME.withZone(ZoneId.from(ZoneOffset.UTC)).format(listing.getTimestampCreated());
+        this.category = listing.getCategory().name();
+        this.placeName = listing.getPlace().getName();
+        this.userUsername = listing.getUser().getUsername();
     }
 
     public Long getId() {

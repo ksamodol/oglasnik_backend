@@ -47,53 +47,19 @@ public class ListingServiceImpl implements ListingService {
         return vehicleListingRepository.findAll(PageRequest.of(page, size)).stream().map(this::mapVehicleListingToDTO).collect(Collectors.toList());
     }
 
+    @Override
+    public List<ListingDTO> findAllListingsByCategory(String category) {
+        return null;
+    }
 
-    private ListingDTO mapListingToDTO(Listing listing){  //TODO: preselit u klasu, i da svaka klasa definira svoju map metodu?
-        return new ListingDTO(
-                listing.getId(),
-                listing.getTitle(),
-                listing.getDescription(),
-                listing.getCondition().name(),
-                DateTimeFormatter.ISO_LOCAL_DATE_TIME.withZone(ZoneId.from(ZoneOffset.UTC)).format(listing.getTimestampCreated()), //TODO: zone?
-                listing.getCategory().name(),
-                listing.getPlace().getName(),
-                listing.getUser().getUsername()
-        );
+
+    private ListingDTO mapListingToDTO(Listing listing){
+        return new ListingDTO(listing);
     }
     private PropertyListingDTO mapPropertyListingToDTO(PropertyListing propertyListing){
-        return new PropertyListingDTO(
-                propertyListing.getId(),
-                propertyListing.getTitle(),
-                propertyListing.getDescription(),
-                propertyListing.getCondition().name(),
-                DateTimeFormatter.ISO_LOCAL_DATE_TIME.withZone(ZoneId.from(ZoneOffset.UTC)).format(propertyListing.getTimestampCreated()),
-                propertyListing.getCategory().name(),
-                propertyListing.getPlace().getName(),
-                propertyListing.getUser().getUsername(),
-                propertyListing.getInsideArea(),
-                propertyListing.getOutsideArea(),
-                propertyListing.getFloors(),
-                propertyListing.getYearBuilt(),
-                propertyListing.getNumberOfRooms(),
-                propertyListing.getPropertyType().name()
-        );
+        return new PropertyListingDTO(propertyListing);
     }
     private VehicleListingDTO mapVehicleListingToDTO(VehicleListing vehicleListing){
-        return new VehicleListingDTO(
-            vehicleListing.getId(),
-                vehicleListing.getTitle(),
-                vehicleListing.getDescription(),
-                vehicleListing.getCondition().name(),
-                DateTimeFormatter.ISO_LOCAL_DATE_TIME.withZone(ZoneId.from(ZoneOffset.UTC)).format(vehicleListing.getTimestampCreated()),
-                vehicleListing.getCategory().name(),
-                vehicleListing.getPlace().getName(),
-                vehicleListing.getUser().getUsername(),
-                vehicleListing.getMake(),
-                vehicleListing.getModel(),
-                vehicleListing.getYear(),
-                vehicleListing.getMileage(),
-                vehicleListing.getHorsepower(),
-                vehicleListing.getTransmission().name()
-        );
+        return new VehicleListingDTO(vehicleListing);
     }
 }

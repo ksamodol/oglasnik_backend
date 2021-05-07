@@ -22,6 +22,15 @@ public class VehicleListingDTO extends ListingDTO {
         this.horsepower = horsepower;
         this.transmission = transmission;
     }
+    public VehicleListingDTO(VehicleListing vehicleListing){
+        super(vehicleListing);
+        this.make = vehicleListing.getMake();
+        this.model = vehicleListing.getModel();
+        this.year = vehicleListing.getYear();
+        this.mileage = vehicleListing.getMileage();
+        this.horsepower = vehicleListing.getHorsepower();
+        this.transmission = vehicleListing.getTransmission().name();
+    }
 
     public String getMake() {
         return make;
