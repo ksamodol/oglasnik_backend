@@ -1,10 +1,14 @@
 package io.github.ksamodol.oglasnikbackend.entity.listing.property;
 
 import io.github.ksamodol.oglasnikbackend.entity.listing.Listing;
+import io.github.ksamodol.oglasnikbackend.entity.listing.ListingDTO;
 
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
 @Entity

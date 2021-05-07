@@ -7,16 +7,20 @@ import io.github.ksamodol.oglasnikbackend.security.User;
 
 import javax.persistence.*;
 import java.time.Instant;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 //TODO: timestamp, user, category
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-public class Listing {
+public class Listing{
     @Id
     @GeneratedValue
     private Long id;
     private String title;
-    private String description;
+    private String description; //TODO: sql - text
+    @Enumerated(EnumType.STRING)
     private Condition condition;
     private Instant timestampCreated;
     @Enumerated(EnumType.STRING)
@@ -24,7 +28,7 @@ public class Listing {
     @ManyToOne
     @JoinColumn(name = "placeId")
     private Place place;
-    
+
     @ManyToOne
     private User user;
 
@@ -114,4 +118,5 @@ public class Listing {
     public int hashCode() {
         return Objects.hash(id, title, description, condition, timestampCreated, category, place, user);
     }
+
 }

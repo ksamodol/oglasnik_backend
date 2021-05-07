@@ -1,12 +1,11 @@
 package io.github.ksamodol.oglasnikbackend.entity.category;
 
 public enum Category {
-    PROPERTIES,
-    VEHICLES,
-    FOOD_AND_DRINKS,
-    ELECTRONICS,
-    SPORTS,
-    BOOKS,
+    PROPERTY,
+    VEHICLE,
+    FOOD_AND_DRINK,
+    ELECTRONIC,
+    SPORT,
+    BOOK,
     ART
-
 }

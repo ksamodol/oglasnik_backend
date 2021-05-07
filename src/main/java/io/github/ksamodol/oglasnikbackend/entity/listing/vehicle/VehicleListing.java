@@ -3,6 +3,8 @@ package io.github.ksamodol.oglasnikbackend.entity.listing.vehicle;
 import io.github.ksamodol.oglasnikbackend.entity.listing.Listing;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import java.util.Objects;
 
 @Entity
@@ -12,6 +14,7 @@ public class VehicleListing extends Listing {
     private int year;
     private int mileage;
     private int horsepower;
+    @Enumerated(EnumType.STRING)
     private Transmission transmission;
 
     public VehicleListing() {
