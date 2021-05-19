@@ -1,5 +1,6 @@
 package io.github.ksamodol.oglasnikbackend.services;
 
+import io.github.ksamodol.oglasnikbackend.entity.category.Category;
 import io.github.ksamodol.oglasnikbackend.entity.listing.Listing;
 import io.github.ksamodol.oglasnikbackend.entity.listing.ListingDTO;
 import io.github.ksamodol.oglasnikbackend.entity.listing.property.PropertyListing;
@@ -48,10 +49,9 @@ public class ListingServiceImpl implements ListingService {
     }
 
     @Override
-    public List<ListingDTO> findAllListingsByCategory(String category) {
-        return null;
+    public List<ListingDTO> findAllListingsByCategory(Category category) {
+        return listingRepository.findAllByCategory(category).stream().map(this::mapListingToDTO).collect(Collectors.toList());
     }
-
 
     private ListingDTO mapListingToDTO(Listing listing){
         return new ListingDTO(listing);

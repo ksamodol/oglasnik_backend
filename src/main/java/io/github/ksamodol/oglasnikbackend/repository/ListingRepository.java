@@ -1,5 +1,6 @@
 package io.github.ksamodol.oglasnikbackend.repository;
 
+import io.github.ksamodol.oglasnikbackend.entity.category.Category;
 import io.github.ksamodol.oglasnikbackend.entity.listing.Listing;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -11,5 +12,7 @@ import java.util.Optional;
 
 @Repository
 public interface ListingRepository extends JpaRepository<Listing, Long> {
+
+    List<Listing> findAllByCategory(Category category);
 
 }

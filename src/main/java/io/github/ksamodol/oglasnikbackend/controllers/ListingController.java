@@ -1,5 +1,6 @@
 package io.github.ksamodol.oglasnikbackend.controllers;
 
+import io.github.ksamodol.oglasnikbackend.entity.category.Category;
 import io.github.ksamodol.oglasnikbackend.entity.listing.Listing;
 import io.github.ksamodol.oglasnikbackend.entity.listing.ListingDTO;
 import io.github.ksamodol.oglasnikbackend.entity.listing.property.PropertyListingDTO;
@@ -26,17 +27,10 @@ public class ListingController {
     public List<ListingDTO> findAllListings(@RequestParam(defaultValue = "0") int page , @RequestParam(defaultValue = "10") int size) {
         return listingService.findAllListings(page, size);
     }
-    @GetMapping("/property")
-    public List<PropertyListingDTO> findAllPropertyListings(@RequestParam(defaultValue = "0") int page , @RequestParam(defaultValue = "10") int size) {
-        return listingService.findAllPropertyListings(page, size);
-    }
-    @GetMapping("/vehicle")
-    public List<VehicleListingDTO> findAllVehicleListings(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size){
-        return listingService.findAllVehicleListings(page, size);
-    }
-    @GetMapping
-    public List<ListingDTO> findAllListingsByCategory(@RequestParam String category){
-        return null;
+
+    @GetMapping("{category}")
+    public List<ListingDTO> findAllListingsByCategory(@PathVariable Category category){ //TODO: ERROR HANDLING
+        return listingService.findAllListingsByCategory(category);
     }
 
 
