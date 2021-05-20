@@ -28,7 +28,7 @@ public class LocationController {
     }
 
     @GetMapping(path = "/place", params = "countyId")
-    public List<PlaceDTO> findAllPlacesByCountyId(@RequestParam int countyId){
+    public List<PlaceDTO> findAllPlacesByCountyId(@RequestParam Long countyId){
            return locationService.findAllPlacesByCountyId(countyId);
     }
 

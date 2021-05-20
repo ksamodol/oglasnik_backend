@@ -10,7 +10,7 @@ import java.util.List;
 @Repository
 public interface PlaceRepository extends JpaRepository<Place, Long> {
     List<Place> findAll();
-    List<Place> findAllByCounty_id(int id);
+    List<Place> findAllByCounty_id(Long id);
 
 
 }

@@ -7,11 +7,8 @@ import io.github.ksamodol.oglasnikbackend.security.User;
 
 import javax.persistence.*;
 import java.time.Instant;
-import java.time.ZoneId;
-import java.time.ZoneOffset;
-import java.time.format.DateTimeFormatter;
 import java.util.Objects;
-//TODO: timestamp, user, category
+//TODO: price
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 public class Listing{
@@ -19,9 +16,10 @@ public class Listing{
     @GeneratedValue
     private Long id;
     private String title;
-    private String description; //TODO: sql - text
+    private String description;
     @Enumerated(EnumType.STRING)
     private Condition condition;
+    private Long price; //in lipas
     private Instant timestampCreated;
     @Enumerated(EnumType.STRING)
     private Category category;
@@ -67,6 +65,13 @@ public class Listing{
         this.condition = condition;
     }
 
+    public Long getPrice() {
+        return price;
+    }
+
+    public void setPrice(Long price) {
+        this.price = price;
+    }
     public Instant getTimestampCreated() {
         return timestampCreated;
     }
@@ -100,7 +105,6 @@ public class Listing{
     }
 
 
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -110,6 +114,7 @@ public class Listing{
                 Objects.equals(title, listing.title) &&
                 Objects.equals(description, listing.description) &&
                 condition == listing.condition &&
+                Objects.equals(price, listing.price) &&
                 Objects.equals(timestampCreated, listing.timestampCreated) &&
                 category == listing.category &&
                 Objects.equals(place, listing.place) &&
@@ -118,7 +123,6 @@ public class Listing{
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, title, description, condition, timestampCreated, category, place, user);
+        return Objects.hash(id, title, description, condition, price, timestampCreated, category, place, user);
     }
-
 }

@@ -9,6 +9,6 @@ import java.util.List;
 
 public interface LocationService {
     List<PlaceDTO> findAllPlaces();
-    List<PlaceDTO> findAllPlacesByCountyId(int id);
+    List<PlaceDTO> findAllPlacesByCountyId(Long id);
     List<CountyDTO> findAllCounties();
 }

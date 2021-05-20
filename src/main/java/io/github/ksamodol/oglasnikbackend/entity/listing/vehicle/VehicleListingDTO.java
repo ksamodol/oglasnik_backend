@@ -13,15 +13,6 @@ public class VehicleListingDTO extends ListingDTO {
     private int horsepower;
     private String transmission;
 
-    public VehicleListingDTO(Long id, String title, String description, String condition, String timestampCreated, String category, String placeName, String userUsername, String make, String model, int year, int mileage, int horsepower, String transmission) {
-        super(id, title, description, condition, timestampCreated, category, placeName, userUsername);
-        this.make = make;
-        this.model = model;
-        this.year = year;
-        this.mileage = mileage;
-        this.horsepower = horsepower;
-        this.transmission = transmission;
-    }
     public VehicleListingDTO(VehicleListing vehicleListing){
         super(vehicleListing);
         this.make = vehicleListing.getMake();

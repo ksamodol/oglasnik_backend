@@ -28,7 +28,7 @@ public class LocationServiceImpl implements LocationService {
     }
 
     @Override
-    public List<PlaceDTO> findAllPlacesByCountyId(int id){
+    public List<PlaceDTO> findAllPlacesByCountyId(Long id){
         return placeRepository.findAllByCounty_id(id).stream().map(this::mapPlaceToDTO).collect(Collectors.toList());
     }
 

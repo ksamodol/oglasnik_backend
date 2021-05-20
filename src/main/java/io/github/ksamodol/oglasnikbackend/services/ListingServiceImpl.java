@@ -11,6 +11,7 @@ import io.github.ksamodol.oglasnikbackend.repository.ListingRepository;
 import io.github.ksamodol.oglasnikbackend.repository.PropertyListingRepository;
 import io.github.ksamodol.oglasnikbackend.repository.VehicleListingRepository;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.time.ZoneId;
@@ -34,8 +35,8 @@ public class ListingServiceImpl implements ListingService {
     }
 
     @Override
-    public List<ListingDTO> findAllListings(int page, int size) {
-        return listingRepository.findAll(PageRequest.of(page, size)).stream().map(this::mapListingToDTO).collect(Collectors.toList());
+    public List<ListingDTO> findAllListings(Specification<Listing> specification, int page, int size) {
+        return listingRepository.findAll(specification, PageRequest.of(page, size)).stream().map(this::mapListingToDTO).collect(Collectors.toList());
     }
 
     @Override
