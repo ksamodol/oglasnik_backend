@@ -6,9 +6,7 @@ import io.github.ksamodol.oglasnikbackend.entity.listing.ListingDTO;
 import io.github.ksamodol.oglasnikbackend.entity.listing.property.PropertyListingDTO;
 import io.github.ksamodol.oglasnikbackend.entity.listing.vehicle.VehicleListingDTO;
 import io.github.ksamodol.oglasnikbackend.services.ListingService;
-import net.kaczmarzyk.spring.data.jpa.domain.GreaterThanOrEqual;
-import net.kaczmarzyk.spring.data.jpa.domain.LessThanOrEqual;
-import net.kaczmarzyk.spring.data.jpa.domain.Like;
+import net.kaczmarzyk.spring.data.jpa.domain.*;
 import net.kaczmarzyk.spring.data.jpa.web.annotation.And;
 import net.kaczmarzyk.spring.data.jpa.web.annotation.Spec;
 import org.springframework.core.convert.ConversionFailedException;
@@ -39,18 +37,18 @@ public class ListingController {
     public List<ListingDTO> findAllListings(
             @And({
                     @Spec(path="title", params="search", spec=Like.class),
+                    @Spec(path="condition", params="condition", spec=EqualIgnoreCase.class),
                     @Spec(path="price", params="priceMin", spec=GreaterThanOrEqual.class),
                     @Spec(path="price", params="priceMax", spec=LessThanOrEqual.class)
-            })
-                    Specification<Listing> specification,
+            }) Specification<Listing> specification,
             @RequestParam(defaultValue = "0")@PositiveOrZero int page,
-            @RequestParam(defaultValue = "10") @Min(1) @Max(20) int size
+            @RequestParam(defaultValue = "10")@PositiveOrZero @Max(20) int size
     ){
         return listingService.findAllListings(specification, page, size);
     }
 
     @GetMapping("/{category}")
-    public List<ListingDTO> findAllListingsByCategory(@PathVariable Category category){ //TODO: ERROR HANDLING
+    public List<ListingDTO> findAllListingsByCategory(@PathVariable Category category){
         return listingService.findAllListingsByCategory(category);
     }
 

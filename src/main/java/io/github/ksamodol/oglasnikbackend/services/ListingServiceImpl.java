@@ -45,8 +45,8 @@ public class ListingServiceImpl implements ListingService {
     }
 
     @Override
-    public List<VehicleListingDTO> findAllVehicleListings(int page, int size) {
-        return vehicleListingRepository.findAll(PageRequest.of(page, size)).stream().map(this::mapVehicleListingToDTO).collect(Collectors.toList());
+    public List<VehicleListingDTO> findAllVehicleListings(Specification<VehicleListing> specification, int page, int size) {
+        return vehicleListingRepository.findAll(specification, PageRequest.of(page, size)).stream().map(this::mapVehicleListingToDTO).collect(Collectors.toList());
     }
 
     @Override
