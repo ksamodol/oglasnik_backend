@@ -3,12 +3,15 @@ package io.github.ksamodol.oglasnikbackend.entity.listing;
 import io.github.ksamodol.oglasnikbackend.entity.category.Category;
 import io.github.ksamodol.oglasnikbackend.entity.location.Place;
 import io.github.ksamodol.oglasnikbackend.security.User;
+import org.hibernate.validator.constraints.Length;
 
 
 import javax.persistence.*;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.NotBlank;
 import java.time.Instant;
 import java.util.Objects;
-//TODO: price
+
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 public class Listing{
@@ -19,6 +22,7 @@ public class Listing{
     private String description;
     @Enumerated(EnumType.STRING)
     private Condition condition;
+    @Max(value = 100000000, message = "Price too high!")
     private Long price; //in lipas
     private Instant timestampCreated;
     @Enumerated(EnumType.STRING)

@@ -1,0 +1,52 @@
+package io.github.ksamodol.oglasnikbackend.entity.listing;
+
+import io.github.ksamodol.oglasnikbackend.entity.category.Category;
+import io.github.ksamodol.oglasnikbackend.entity.location.Place;
+import io.github.ksamodol.oglasnikbackend.security.User;
+import org.hibernate.validator.constraints.Length;
+
+import javax.validation.constraints.Max;
+import javax.validation.constraints.NotBlank;
+import java.time.Instant;
+
+public class ListingCommand {
+    @NotBlank(message = "Title can't be blank!")
+    @Length(min = 5, max = 200, message = "Title can't be shorter than {min} or longer than {max} characters!")
+    private String title;
+    @Length(max = 30000, message = "Description can't be longer than {max} characters!")
+    private String description;
+    private Condition condition;
+    @Max(value = 100000000, message = "Price too high!")
+    private Long price;
+    private Category category;
+    private String place;
+    private User user;  //TODO: implement actual user
+
+    public String getTitle() {
+        return title;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public Condition getCondition() {
+        return condition;
+    }
+
+    public Long getPrice() {
+        return price;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public String getPlace() {
+        return place;
+    }
+
+    public User getUser() {
+        return user;
+    }
+}

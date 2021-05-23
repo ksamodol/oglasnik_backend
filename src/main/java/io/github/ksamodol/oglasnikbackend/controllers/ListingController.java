@@ -2,6 +2,7 @@ package io.github.ksamodol.oglasnikbackend.controllers;
 
 import io.github.ksamodol.oglasnikbackend.entity.category.Category;
 import io.github.ksamodol.oglasnikbackend.entity.listing.Listing;
+import io.github.ksamodol.oglasnikbackend.entity.listing.ListingCommand;
 import io.github.ksamodol.oglasnikbackend.entity.listing.ListingDTO;
 import io.github.ksamodol.oglasnikbackend.entity.listing.property.PropertyListingDTO;
 import io.github.ksamodol.oglasnikbackend.entity.listing.vehicle.VehicleListingDTO;
@@ -50,6 +51,20 @@ public class ListingController {
     @GetMapping("/{category}")
     public List<ListingDTO> findAllListingsByCategory(@PathVariable Category category){
         return listingService.findAllListingsByCategory(category);
+    }
+
+    @PostMapping
+    public ResponseEntity<ListingDTO> save(@Valid @RequestBody ListingCommand listingCommand){
+        return listingService.save(listingCommand).map(
+                listingDTO -> ResponseEntity
+                        .status(HttpStatus.CREATED)
+                        .body(listingDTO)
+        )
+                .orElseGet(
+                        () -> ResponseEntity
+                                .status(HttpStatus.BAD_REQUEST)
+                                .build()
+                );
     }
 
     @ExceptionHandler(ConversionFailedException.class)

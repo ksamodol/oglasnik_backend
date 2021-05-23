@@ -2,6 +2,7 @@ package io.github.ksamodol.oglasnikbackend.services;
 
 import io.github.ksamodol.oglasnikbackend.entity.category.Category;
 import io.github.ksamodol.oglasnikbackend.entity.listing.Listing;
+import io.github.ksamodol.oglasnikbackend.entity.listing.ListingCommand;
 import io.github.ksamodol.oglasnikbackend.entity.listing.ListingDTO;
 import io.github.ksamodol.oglasnikbackend.entity.listing.property.PropertyListingDTO;
 import io.github.ksamodol.oglasnikbackend.entity.listing.vehicle.VehicleListing;
@@ -16,4 +17,5 @@ public interface ListingService {
     List<PropertyListingDTO> findAllPropertyListings(int page, int size);
     List<VehicleListingDTO> findAllVehicleListings(Specification<VehicleListing> specification, int page, int size);
     List<ListingDTO> findAllListingsByCategory(Category category);
+    Optional<ListingDTO> save(ListingCommand listingCommand);
 }
