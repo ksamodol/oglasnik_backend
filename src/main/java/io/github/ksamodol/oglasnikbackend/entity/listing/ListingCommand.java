@@ -7,6 +7,7 @@ import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.Max;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.PositiveOrZero;
 import java.time.Instant;
 
 public class ListingCommand {
@@ -19,7 +20,8 @@ public class ListingCommand {
     @Max(value = 100000000, message = "Price too high!")
     private Long price;
     private Category category;
-    private String place;
+    @PositiveOrZero(message = "Place has to be a positive number!")
+    private Long placeId;
     private User user;  //TODO: implement actual user
 
     public String getTitle() {
@@ -42,8 +44,8 @@ public class ListingCommand {
         return category;
     }
 
-    public String getPlace() {
-        return place;
+    public Long getPlaceId() {
+        return placeId;
     }
 
     public User getUser() {

@@ -18,4 +18,5 @@ public interface ListingService {
     List<VehicleListingDTO> findAllVehicleListings(Specification<VehicleListing> specification, int page, int size);
     List<ListingDTO> findAllListingsByCategory(Category category);
     Optional<ListingDTO> save(ListingCommand listingCommand);
+    boolean delete(Long listingId);
 }

@@ -67,6 +67,16 @@ public class ListingController {
                 );
     }
 
+    @DeleteMapping("/{listingId}")
+    public ResponseEntity<Void> delete(@PathVariable Long listingId){
+        if(listingService.delete(listingId)){
+            return ResponseEntity.noContent().build();
+        }else{
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+
     @ExceptionHandler(ConversionFailedException.class)
     public ResponseEntity<String> badCategoryHandler(){
         return ResponseEntity.badRequest().body("No such category found!");

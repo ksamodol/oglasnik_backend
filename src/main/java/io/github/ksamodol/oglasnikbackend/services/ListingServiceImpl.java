@@ -69,7 +69,16 @@ public class ListingServiceImpl implements ListingService {
         } catch (IllegalArgumentException e) {
             return Optional.empty();
         }
+    }
 
+
+    @Override
+    public boolean delete(Long listingId) {
+        if(!listingRepository.existsById(listingId)){
+            return false;
+        }
+        listingRepository.deleteById(listingId);
+        return true;
     }
 
     private ListingDTO mapListingToDTO(Listing listing){
@@ -82,7 +91,7 @@ public class ListingServiceImpl implements ListingService {
         return new VehicleListingDTO(vehicleListing);
     }
     private Listing mapCommandToListing(ListingCommand listingCommand) throws IllegalArgumentException{
-        Optional<Place> place = placeRepository.findByNameEquals(listingCommand.getPlace());
+        Optional<Place> place = placeRepository.findById(listingCommand.getPlaceId());
         if (place.isEmpty()){
             throw new IllegalArgumentException("Place is not valid!");
         }
@@ -97,5 +106,9 @@ public class ListingServiceImpl implements ListingService {
         listing.setUser(userRepository.getOne(1L)); //TODO: Implement real user
 
         return listing;
+    }
+
+    private boolean isValid(ListingCommand listingCommand){//TODO: implement
+        return true;
     }
 }

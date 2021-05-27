@@ -19,6 +19,7 @@ public class Listing{
     @GeneratedValue
     private Long id;
     private String title;
+    @Column(length = 32000)
     private String description;
     @Enumerated(EnumType.STRING)
     private Condition condition;
