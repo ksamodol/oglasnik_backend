@@ -1,6 +1,5 @@
 package io.github.ksamodol.oglasnikbackend.services;
 
-import io.github.ksamodol.oglasnikbackend.exception.UserAlreadyExistsException;
 import io.github.ksamodol.oglasnikbackend.repository.UserRepository;
 import io.github.ksamodol.oglasnikbackend.security.User;
 import io.github.ksamodol.oglasnikbackend.security.UserCommand;
@@ -12,6 +11,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,19 +25,21 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     }
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    public User loadUserByUsername(String username) throws UsernameNotFoundException {
         return userRepository.findOneByUsername(username)
                 .orElseThrow(() ->
                         new UsernameNotFoundException("User '" + username + "' not found")
                 );
     }
 
-    public UserDTO save(UserCommand userCommand) throws IllegalArgumentException, UserAlreadyExistsException {
-        if(userAlreadyExists(userCommand)){
-            throw new UserAlreadyExistsException();
+    public User save(UserCommand userCommand) throws IllegalArgumentException{
+        if(userRepository.existsByUsername(userCommand.getUsername())){
+            throw new IllegalArgumentException("Username already in use!");
         }
-        User user = userRepository.save(mapCommandToUser(userCommand));
-        return mapUserToDTO(user);
+        if(userRepository.existsByEmail(userCommand.getEmail())){
+            throw new IllegalArgumentException("Email already in use!");
+        }
+        return userRepository.save(mapCommandToUser(userCommand));
     }
 
     private User mapCommandToUser(UserCommand userCommand){
@@ -48,17 +50,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         user.setFirstName(userCommand.getFirstName());
         user.setLastName(userCommand.getLastName());
         user.setTimestampCreated(Instant.now());
-        user.setListings(List.of()); //TODO: null?
-
+        user.setListings(Collections.emptyList()); //TODO: null?
         return user;
     }
-
-    private UserDTO mapUserToDTO(User user){
-        return new UserDTO(user.getUsername(), user.getPassword());
-    }
-
-    private boolean userAlreadyExists(UserCommand userCommand){
-        return userRepository.existsByUsername(userCommand.getUsername()) || userRepository.existsByEmail(userCommand.getEmail());
-    }
-
 }

@@ -27,19 +27,17 @@ public class ListingServiceImpl implements ListingService {
     private PropertyListingRepository propertyListingRepository;
     private VehicleListingRepository vehicleListingRepository;
     private PlaceRepository placeRepository;
-    private UserRepository userRepository;
 
     public ListingServiceImpl(
             ListingRepository listingRepository,
             PropertyListingRepository propertyListingRepository,
             VehicleListingRepository vehicleListingRepository,
-            PlaceRepository placeRepository, UserRepository userRepository
+            PlaceRepository placeRepository
     ){
         this.listingRepository = listingRepository;
         this.propertyListingRepository = propertyListingRepository;
         this.vehicleListingRepository = vehicleListingRepository;
         this.placeRepository = placeRepository;
-        this.userRepository = userRepository;
     }
 
     @Override
@@ -63,12 +61,11 @@ public class ListingServiceImpl implements ListingService {
     }
 
     @Override
-    public Optional<ListingDTO> save(ListingCommand listingCommand) {
-        try{
-            return Optional.of(mapListingToDTO(listingRepository.save(mapCommandToListing(listingCommand))));
-        } catch (IllegalArgumentException e) {
-            return Optional.empty();
+    public Optional<ListingDTO> save(ListingCommand listingCommand, User user) {
+        if(!placeRepository.existsById(listingCommand.getPlaceId())){
+            throw new IllegalArgumentException("Bad place id!");
         }
+        return Optional.of(mapListingToDTO(listingRepository.save(mapCommandToListing(listingCommand, user))));
     }
 
 
@@ -90,11 +87,8 @@ public class ListingServiceImpl implements ListingService {
     private VehicleListingDTO mapVehicleListingToDTO(VehicleListing vehicleListing){
         return new VehicleListingDTO(vehicleListing);
     }
-    private Listing mapCommandToListing(ListingCommand listingCommand) throws IllegalArgumentException{
+    private Listing mapCommandToListing(ListingCommand listingCommand, User user) throws IllegalArgumentException{
         Optional<Place> place = placeRepository.findById(listingCommand.getPlaceId());
-        if (place.isEmpty()){
-            throw new IllegalArgumentException("Place is not valid!");
-        }
         Listing listing = new Listing();
         listing.setTitle(listingCommand.getTitle());
         listing.setDescription(listingCommand.getDescription());
@@ -103,7 +97,7 @@ public class ListingServiceImpl implements ListingService {
         listing.setPrice(listingCommand.getPrice());
         listing.setTimestampCreated(Instant.now());
         listing.setPlace(place.get());
-        listing.setUser(userRepository.getOne(1L)); //TODO: Implement real user
+        listing.setUser(user); //TODO: Implement real user
 
         return listing;
     }

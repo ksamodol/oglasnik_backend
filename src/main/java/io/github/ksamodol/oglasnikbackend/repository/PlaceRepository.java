@@ -12,4 +12,5 @@ import java.util.Optional;
 public interface PlaceRepository extends JpaRepository<Place, Long> {
     List<Place> findAll();
     List<Place> findAllByCounty_id(Long id);
+    boolean existsById(Long id);
 }

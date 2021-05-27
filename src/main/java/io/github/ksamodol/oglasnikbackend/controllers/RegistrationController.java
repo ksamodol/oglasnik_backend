@@ -1,5 +1,6 @@
 package io.github.ksamodol.oglasnikbackend.controllers;
 
+import io.github.ksamodol.oglasnikbackend.security.User;
 import io.github.ksamodol.oglasnikbackend.security.UserCommand;
 import io.github.ksamodol.oglasnikbackend.security.UserDTO;
 import io.github.ksamodol.oglasnikbackend.services.UserDetailsServiceImpl;
@@ -20,7 +21,7 @@ public class RegistrationController {
     }
 
     @PostMapping
-    public UserDTO register(@Valid @RequestBody UserCommand userCommand){
+    public User register(@Valid @RequestBody UserCommand userCommand){
         return userDetailsService.save(userCommand);
     }
 

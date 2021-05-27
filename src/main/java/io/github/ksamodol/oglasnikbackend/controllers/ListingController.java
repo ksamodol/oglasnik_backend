@@ -6,6 +6,7 @@ import io.github.ksamodol.oglasnikbackend.entity.listing.ListingCommand;
 import io.github.ksamodol.oglasnikbackend.entity.listing.ListingDTO;
 import io.github.ksamodol.oglasnikbackend.entity.listing.property.PropertyListingDTO;
 import io.github.ksamodol.oglasnikbackend.entity.listing.vehicle.VehicleListingDTO;
+import io.github.ksamodol.oglasnikbackend.security.User;
 import io.github.ksamodol.oglasnikbackend.services.ListingService;
 import net.kaczmarzyk.spring.data.jpa.domain.*;
 import net.kaczmarzyk.spring.data.jpa.web.annotation.And;
@@ -15,8 +16,15 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.StreamingHttpOutputMessage;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.swing.*;
 import javax.validation.Valid;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
@@ -54,8 +62,10 @@ public class ListingController {
     }
 
     @PostMapping
-    public ResponseEntity<ListingDTO> save(@Valid @RequestBody ListingCommand listingCommand){
-        return listingService.save(listingCommand).map(
+    @Secured("ROLE_USER")
+    public ResponseEntity<ListingDTO> save(@Valid @RequestBody ListingCommand listingCommand, Authentication authentication){
+        User user = (User) authentication.getPrincipal();
+        return listingService.save(listingCommand, user).map(
                 listingDTO -> ResponseEntity
                         .status(HttpStatus.CREATED)
                         .body(listingDTO)

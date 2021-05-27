@@ -7,6 +7,7 @@ import io.github.ksamodol.oglasnikbackend.entity.listing.ListingDTO;
 import io.github.ksamodol.oglasnikbackend.entity.listing.property.PropertyListingDTO;
 import io.github.ksamodol.oglasnikbackend.entity.listing.vehicle.VehicleListing;
 import io.github.ksamodol.oglasnikbackend.entity.listing.vehicle.VehicleListingDTO;
+import io.github.ksamodol.oglasnikbackend.security.User;
 import org.springframework.data.jpa.domain.Specification;
 
 import java.util.List;
@@ -17,6 +18,6 @@ public interface ListingService {
     List<PropertyListingDTO> findAllPropertyListings(int page, int size);
     List<VehicleListingDTO> findAllVehicleListings(Specification<VehicleListing> specification, int page, int size);
     List<ListingDTO> findAllListingsByCategory(Category category);
-    Optional<ListingDTO> save(ListingCommand listingCommand);
+    Optional<ListingDTO> save(ListingCommand listingCommand, User user);
     boolean delete(Long listingId);
 }
