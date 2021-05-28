@@ -87,10 +87,7 @@ public class ListingController {
     }
 
 
-    @ExceptionHandler(ConversionFailedException.class)
-    public ResponseEntity<String> badCategoryHandler(){
-        return ResponseEntity.badRequest().body("No such category found!");
-    }
+
 
 
     /*@GetMapping("/{id}")
