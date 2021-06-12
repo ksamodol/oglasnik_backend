@@ -22,7 +22,7 @@ public class ListingCommand {
     private Category category;
     @PositiveOrZero(message = "Place has to be a positive number!")
     private Long placeId;
-    private User user;  //TODO: implement actual user
+    private User user;
 
     public String getTitle() {
         return title;

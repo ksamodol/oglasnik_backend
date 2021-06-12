@@ -3,7 +3,6 @@ package io.github.ksamodol.oglasnikbackend.services;
 import io.github.ksamodol.oglasnikbackend.repository.UserRepository;
 import io.github.ksamodol.oglasnikbackend.security.User;
 import io.github.ksamodol.oglasnikbackend.security.UserCommand;
-import io.github.ksamodol.oglasnikbackend.security.UserDTO;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

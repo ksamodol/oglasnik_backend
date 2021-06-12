@@ -1,18 +1,21 @@
 package io.github.ksamodol.oglasnikbackend.controllers;
 
 import io.github.ksamodol.oglasnikbackend.entity.listing.Listing;
+import io.github.ksamodol.oglasnikbackend.entity.listing.ListingCommand;
 import io.github.ksamodol.oglasnikbackend.entity.listing.vehicle.VehicleListing;
+import io.github.ksamodol.oglasnikbackend.entity.listing.vehicle.VehicleListingCommand;
 import io.github.ksamodol.oglasnikbackend.entity.listing.vehicle.VehicleListingDTO;
 import io.github.ksamodol.oglasnikbackend.services.ListingService;
 import net.kaczmarzyk.spring.data.jpa.domain.*;
 import net.kaczmarzyk.spring.data.jpa.web.annotation.And;
 import net.kaczmarzyk.spring.data.jpa.web.annotation.Spec;
 import org.springframework.data.jpa.domain.Specification;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -43,5 +46,11 @@ public class VehicleListingController {
             @RequestParam(defaultValue = "10") int size)
     {
         return listingService.findAllVehicleListings(specification, page, size);
+    }
+
+    @PostMapping
+    @Secured("ROLE_USER")
+    public ResponseEntity<VehicleListingDTO> save(@Valid @RequestBody VehicleListingCommand vehicleListingCommand, Authentication authentication){
+        return null;
     }
 }

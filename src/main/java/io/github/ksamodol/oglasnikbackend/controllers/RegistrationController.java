@@ -2,7 +2,6 @@ package io.github.ksamodol.oglasnikbackend.controllers;
 
 import io.github.ksamodol.oglasnikbackend.security.User;
 import io.github.ksamodol.oglasnikbackend.security.UserCommand;
-import io.github.ksamodol.oglasnikbackend.security.UserDTO;
 import io.github.ksamodol.oglasnikbackend.services.UserDetailsServiceImpl;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetailsService;

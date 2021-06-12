@@ -5,14 +5,12 @@ import io.github.ksamodol.oglasnikbackend.entity.location.Place;
 import io.github.ksamodol.oglasnikbackend.entity.location.PlaceDTO;
 import io.github.ksamodol.oglasnikbackend.services.LocationService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.stream.Collectors;
-
+@CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping("location")
 public class LocationController {
@@ -22,6 +20,7 @@ public class LocationController {
     public LocationController(LocationService locationService) {
         this.locationService = locationService;
     }
+    @Secured("ROLE_ADMIN")
     @GetMapping(path = "/place")
     public List<PlaceDTO> findAllPlaces(){
         return locationService.findAllPlaces();
@@ -31,7 +30,6 @@ public class LocationController {
     public List<PlaceDTO> findAllPlacesByCountyId(@RequestParam Long countyId){
            return locationService.findAllPlacesByCountyId(countyId);
     }
-
     @GetMapping(path = "/county")
     public List<CountyDTO> findAllCounties(){
         return locationService.findAllCounties();

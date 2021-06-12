@@ -5,7 +5,11 @@ import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 
 import java.util.Collection;
-
+/*
+    Using a custom token with a persisted user rather than a UsernamePasswordAuthenticationToken
+    unnecessarily queries the database, but it's easier to work with.
+    Remove in the future?
+*/
 public class JwtAuthenticationToken extends AbstractAuthenticationToken {
     private User user;
 
