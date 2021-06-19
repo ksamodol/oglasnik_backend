@@ -1,12 +1,15 @@
 package io.github.ksamodol.oglasnikbackend.controllers;
 
+import io.github.ksamodol.oglasnikbackend.security.User;
 import io.github.ksamodol.oglasnikbackend.services.FileStorageService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -28,25 +31,18 @@ public class FileController {
         this.fileStorageService = fileStorageService;
     }
 
-    @PostMapping("/uploadFile")
-    public UploadFileResponse uploadFile(@RequestParam("file") MultipartFile file) {
-        String fileName = fileStorageService.storeFile(file);
-
-        String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
-                .path("/downloadFile/")
-                .path(fileName)
-                .toUriString();
-
-        return new UploadFileResponse(fileName, fileDownloadUri,
-                file.getContentType(), file.getSize());
-    }
 
     @PostMapping("/uploadMultipleFiles")
-    public List<UploadFileResponse> uploadMultipleFiles(@RequestParam("files") MultipartFile[] files) {
-        return Arrays.asList(files)
-                .stream()
-                .map(file -> uploadFile(file))
-                .collect(Collectors.toList());
+    public HttpStatus uploadMultipleFiles(@RequestParam("files") MultipartFile[] files, @RequestParam Long listingId, Authentication authentication) {
+        User user = (User) authentication.getPrincipal();
+
+        fileStorageService.storeFiles(files, listingId, user);
+        return HttpStatus.OK;
+    }
+
+    @GetMapping("/getListingFiles") //TODO: change
+    public List<String> getListingFiles(@RequestParam Long listingId){
+       return fileStorageService.getListingFiles(listingId);
     }
 
     @GetMapping("/downloadFile/{fileName:.+}")
@@ -72,6 +68,7 @@ public class FileController {
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"")
                 .body(resource);
     }
+
 
     private static class UploadFileResponse{
         private String fileName;

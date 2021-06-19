@@ -14,8 +14,6 @@ public class VehicleListing extends Listing {
     private int year;
     private int mileage;
     private int horsepower;
-    @Enumerated(EnumType.STRING)
-    private Transmission transmission;
 
     public VehicleListing() {
     }
@@ -60,13 +58,7 @@ public class VehicleListing extends Listing {
         this.horsepower = horsepower;
     }
 
-    public Transmission getTransmission() {
-        return transmission;
-    }
 
-    public void setTransmission(Transmission transmission) {
-        this.transmission = transmission;
-    }
 
     @Override
     public boolean equals(Object o) {
@@ -78,12 +70,11 @@ public class VehicleListing extends Listing {
                 mileage == that.mileage &&
                 horsepower == that.horsepower &&
                 Objects.equals(make, that.make) &&
-                Objects.equals(model, that.model) &&
-                transmission == that.transmission;
+                Objects.equals(model, that.model);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), make, model, year, mileage, horsepower, transmission);
+        return Objects.hash(super.hashCode(), make, model, year, mileage, horsepower);
     }
 }

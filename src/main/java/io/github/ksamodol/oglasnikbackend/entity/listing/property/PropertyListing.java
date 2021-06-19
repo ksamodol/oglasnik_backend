@@ -18,8 +18,6 @@ public class PropertyListing extends Listing {
     private int floors;
     private int yearBuilt;
     private int numberOfRooms;
-    @Enumerated(EnumType.STRING)
-    private PropertyType propertyType;
 
     public PropertyListing() {
     }
@@ -64,14 +62,6 @@ public class PropertyListing extends Listing {
         this.numberOfRooms = numberOfRooms;
     }
 
-    public PropertyType getPropertyType() {
-        return propertyType;
-    }
-
-    public void setPropertyType(PropertyType propertyType) {
-        this.propertyType = propertyType;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -82,12 +72,11 @@ public class PropertyListing extends Listing {
                 outsideArea == that.outsideArea &&
                 floors == that.floors &&
                 yearBuilt == that.yearBuilt &&
-                numberOfRooms == that.numberOfRooms &&
-                propertyType == that.propertyType;
+                numberOfRooms == that.numberOfRooms;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), insideArea, outsideArea, floors, yearBuilt, numberOfRooms, propertyType);
+        return Objects.hash(super.hashCode(), insideArea, outsideArea, floors, yearBuilt, numberOfRooms);
     }
 }

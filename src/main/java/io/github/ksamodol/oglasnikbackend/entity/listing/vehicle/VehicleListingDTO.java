@@ -11,7 +11,6 @@ public class VehicleListingDTO extends ListingDTO {
     private int year;
     private int mileage;
     private int horsepower;
-    private String transmission;
 
     public VehicleListingDTO(VehicleListing vehicleListing){
         super(vehicleListing);
@@ -20,7 +19,6 @@ public class VehicleListingDTO extends ListingDTO {
         this.year = vehicleListing.getYear();
         this.mileage = vehicleListing.getMileage();
         this.horsepower = vehicleListing.getHorsepower();
-        this.transmission = vehicleListing.getTransmission().name();
     }
 
     public String getMake() {
@@ -43,7 +41,4 @@ public class VehicleListingDTO extends ListingDTO {
         return horsepower;
     }
 
-    public String getTransmission() {
-        return transmission;
-    }
 }

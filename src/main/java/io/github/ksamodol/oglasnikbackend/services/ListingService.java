@@ -15,6 +15,7 @@ import java.util.Optional;
 
 public interface ListingService {
     List<ListingDTO> findAllListings(Specification<Listing> specification, int page, int size);
+    Optional<ListingDTO> findListingById(Long id);
     List<PropertyListingDTO> findAllPropertyListings(int page, int size);
     List<VehicleListingDTO> findAllVehicleListings(Specification<VehicleListing> specification, int page, int size);
     List<ListingDTO> findAllListingsByCategory(Category category);

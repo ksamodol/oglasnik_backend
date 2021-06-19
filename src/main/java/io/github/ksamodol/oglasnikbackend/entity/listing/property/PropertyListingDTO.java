@@ -13,7 +13,7 @@ public class PropertyListingDTO extends ListingDTO {
     private int floors;
     private int yearBuilt;
     private int numberOfRooms;
-    private String propertyType;
+
 
     public PropertyListingDTO(PropertyListing propertyListing) {
         super(propertyListing);
@@ -22,7 +22,6 @@ public class PropertyListingDTO extends ListingDTO {
         this.floors = propertyListing.getFloors();
         this.yearBuilt = propertyListing.getYearBuilt();
         this.numberOfRooms = propertyListing.getNumberOfRooms();
-        this.propertyType = propertyListing.getPropertyType().name();
     }
 
     public int getInsideArea() {
@@ -44,8 +43,5 @@ public class PropertyListingDTO extends ListingDTO {
     public int getNumberOfRooms() {
         return numberOfRooms;
     }
-
-    public String getPropertyType() {
-        return propertyType;
-    }
+    
 }

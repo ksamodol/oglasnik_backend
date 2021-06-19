@@ -41,6 +41,11 @@ public class ListingServiceImpl implements ListingService {
     }
 
     @Override
+    public Optional<ListingDTO> findListingById(Long id) {
+        return listingRepository.findById(id).map(this::mapListingToDTO);
+    }
+
+    @Override
     public List<ListingDTO> findAllListings(Specification<Listing> specification, int page, int size) {
         return listingRepository.findAll(specification, PageRequest.of(page, size)).stream().map(this::mapListingToDTO).collect(Collectors.toList());
     }
