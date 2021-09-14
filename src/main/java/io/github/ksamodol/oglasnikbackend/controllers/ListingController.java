@@ -10,6 +10,7 @@ import io.github.ksamodol.oglasnikbackend.security.User;
 import io.github.ksamodol.oglasnikbackend.services.ListingService;
 import net.kaczmarzyk.spring.data.jpa.domain.*;
 import net.kaczmarzyk.spring.data.jpa.web.annotation.And;
+import net.kaczmarzyk.spring.data.jpa.web.annotation.Join;
 import net.kaczmarzyk.spring.data.jpa.web.annotation.Spec;
 import org.springframework.core.convert.ConversionFailedException;
 import org.springframework.data.jpa.domain.Specification;
@@ -22,7 +23,9 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.swing.*;
 import javax.validation.Valid;
@@ -42,11 +45,21 @@ public class ListingController {
         this.listingService = listingService;
     }
 
+    @GetMapping("{listingId}")
+    public <T extends ListingDTO> T findListingById(@PathVariable Long listingId){
+        return (T) listingService.findListingById(listingId).get();
+    }
+
     @GetMapping
     public List<ListingDTO> findAllListings(
+            @Join(path="place", alias="p")
+            @Join(path="p.county", alias="c")
             @And({
                     @Spec(path="title", params="search", spec=Like.class),
                     @Spec(path="condition", params="condition", spec=EqualIgnoreCase.class),
+                    @Spec(path="category", params="category", spec=Equal.class),
+                    @Spec(path="c.id", params="county", spec=Equal.class),
+                    @Spec(path="p.id", params="place", spec=Equal.class),
                     @Spec(path="price", params="priceMin", spec=GreaterThanOrEqual.class),
                     @Spec(path="price", params="priceMax", spec=LessThanOrEqual.class)
             }) Specification<Listing> specification,
@@ -56,16 +69,22 @@ public class ListingController {
         return listingService.findAllListings(specification, page, size);
     }
 
-    @GetMapping("/{category}")
-    public List<ListingDTO> findAllListingsByCategory(@PathVariable Category category){
-        return listingService.findAllListingsByCategory(category);
+    @GetMapping("/personal")
+    @Secured("ROLE_USER")
+    public List<ListingDTO> findAllListingsByUser(Authentication authentication){
+        User user = (User) authentication.getPrincipal();
+        return listingService.findAllListingsByUser(user);
     }
 
     @PostMapping
     @Secured("ROLE_USER")
-    public ResponseEntity<ListingDTO> save(@Valid @RequestBody ListingCommand listingCommand, Authentication authentication){
+    public ResponseEntity<ListingDTO> saveListing(
+            @Valid @RequestPart("listing") ListingCommand listingCommand,
+            @RequestPart("images") MultipartFile[] images,
+            Authentication authentication
+    ){
         User user = (User) authentication.getPrincipal();
-        return listingService.save(listingCommand, user).map(
+        return listingService.saveListing(listingCommand, images, user).map(
                 listingDTO -> ResponseEntity
                         .status(HttpStatus.CREATED)
                         .body(listingDTO)
@@ -76,6 +95,7 @@ public class ListingController {
                                 .build()
                 );
     }
+
 
     @DeleteMapping("/{listingId}")
     public ResponseEntity<Void> delete(@PathVariable Long listingId){

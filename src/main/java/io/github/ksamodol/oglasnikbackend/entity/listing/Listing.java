@@ -28,12 +28,13 @@ public class Listing{
     private Instant timestampCreated;
     @Enumerated(EnumType.STRING)
     private Category category;
+
     @ManyToOne
     @JoinColumn(name = "placeId")
     private Place place;
-
     @ManyToOne
     private User user;
+
 
     public Listing() {
     }

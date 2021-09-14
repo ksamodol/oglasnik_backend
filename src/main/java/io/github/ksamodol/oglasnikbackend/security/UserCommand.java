@@ -28,13 +28,16 @@ public class UserCommand {
     private String lastName;
     @Email(message = "Must be a valid email address")
     private String email;
+    @NotBlank
+    private String phoneNumber;
 
-    public UserCommand(String username, String password,String firstName, String lastName, String email) {
+    public UserCommand(String username, String password,String firstName, String lastName, String email, String phoneNumber) {
         this.username = username;
         this.password = password;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
+        this.phoneNumber = phoneNumber;
     }
 
     public String getUsername() {
@@ -75,5 +78,13 @@ public class UserCommand {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 }

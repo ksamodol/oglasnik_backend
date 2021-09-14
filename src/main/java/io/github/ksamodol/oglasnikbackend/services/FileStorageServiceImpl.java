@@ -42,16 +42,7 @@ public class FileStorageServiceImpl implements FileStorageService {
     }
 
     @Override
-    public String storeFiles(MultipartFile[] files, Long listingId, User user) {
-        Optional<ListingDTO> listing = listingService.findListingById(listingId);
-
-        if(listing.isEmpty()){
-            throw new IllegalArgumentException("Bad listing id!");
-        }
-        if(!listing.get().getUserUsername().equals(user.getUsername())){
-            throw new AccessDeniedException("Access denied!");
-        }
-
+    public String storeFiles(MultipartFile[] files, Long listingId) {
 
         for(int i = 0; i < files.length; i++) {
             String contentType = files[i].getContentType();
@@ -72,7 +63,7 @@ public class FileStorageServiceImpl implements FileStorageService {
     }
 
     @Override
-    public List<String> getListingFiles(Long listingId) {
+    public List<String> getImageNames(Long listingId) {
         List<String> fileNames = new ArrayList<String>();
         Path targetLocation = this.fileStorageLocation.resolve(String.valueOf(listingId));
         File listingDirectory = targetLocation.toFile();
@@ -106,6 +97,23 @@ public class FileStorageServiceImpl implements FileStorageService {
             }
         } catch (MalformedURLException ex) {
             throw new MyFileNotFoundException("File not found " + fileName, ex);
+        }
+    }
+
+    @Override
+    public Resource getListingImage(Long listingId, String imageName){
+        try {
+            Path filePath = this.fileStorageLocation
+                    .resolve(String.valueOf(listingId))
+                    .resolve(imageName).normalize();
+            Resource resource = new UrlResource(filePath.toUri());
+            if(resource.exists()) {
+                return resource;
+            } else {
+                throw new MyFileNotFoundException("File not found ");
+            }
+        } catch (MalformedURLException ex) {
+            throw new MyFileNotFoundException("File not found ", ex);
         }
     }
 }

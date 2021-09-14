@@ -2,7 +2,11 @@ package io.github.ksamodol.oglasnikbackend.controllers;
 
 import io.github.ksamodol.oglasnikbackend.entity.listing.Listing;
 import io.github.ksamodol.oglasnikbackend.entity.listing.property.PropertyListing;
+import io.github.ksamodol.oglasnikbackend.entity.listing.property.PropertyListingCommand;
 import io.github.ksamodol.oglasnikbackend.entity.listing.property.PropertyListingDTO;
+import io.github.ksamodol.oglasnikbackend.entity.listing.vehicle.VehicleListingCommand;
+import io.github.ksamodol.oglasnikbackend.entity.listing.vehicle.VehicleListingDTO;
+import io.github.ksamodol.oglasnikbackend.security.User;
 import io.github.ksamodol.oglasnikbackend.services.ListingService;
 import net.kaczmarzyk.spring.data.jpa.domain.EqualIgnoreCase;
 import net.kaczmarzyk.spring.data.jpa.domain.GreaterThanOrEqual;
@@ -10,12 +14,17 @@ import net.kaczmarzyk.spring.data.jpa.domain.LessThanOrEqual;
 import net.kaczmarzyk.spring.data.jpa.domain.Like;
 import net.kaczmarzyk.spring.data.jpa.web.annotation.And;
 import net.kaczmarzyk.spring.data.jpa.web.annotation.Spec;
+import org.aspectj.weaver.ast.Test;
 import org.springframework.data.jpa.domain.Specification;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -50,4 +59,23 @@ public class PropertyListingController {
         return listingService.findAllPropertyListings(page, size);
     }
 
+    @PostMapping
+    @Secured("ROLE_USER")
+    public ResponseEntity<PropertyListingDTO> saveProperty(
+            @Valid @RequestPart("listing") PropertyListingCommand propertyListingCommand,
+            @RequestPart("images") MultipartFile[] images,
+            Authentication authentication
+    ){
+        User user = (User) authentication.getPrincipal();
+        return listingService.savePropertyListing(propertyListingCommand, images, user).map(
+                propertyListingDTO -> ResponseEntity
+                        .status(HttpStatus.CREATED)
+                        .body(propertyListingDTO)
+        )
+                .orElseGet(
+                        () -> ResponseEntity
+                                .status(HttpStatus.BAD_REQUEST)
+                                .build()
+                );
+    }
 }

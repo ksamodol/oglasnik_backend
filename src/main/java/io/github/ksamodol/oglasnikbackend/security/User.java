@@ -20,6 +20,7 @@ public class User implements UserDetails {
     private String username, password;
     private String firstName, lastName;
     private String email;
+    private String phoneNumber;
     private Instant timestampCreated;
     @OneToMany(mappedBy = "user")
     private List<Listing> listings;
@@ -27,13 +28,14 @@ public class User implements UserDetails {
     public User() {
     }
 
-    public User(Long id, String username, String password, String firstName, String lastName, String email, Instant timestampCreated, List<Listing> listings) {
+    public User(Long id, String username, String password, String firstName, String lastName, String email, String phoneNumber, Instant timestampCreated, List<Listing> listings) {
         this.id = id;
         this.username = username;
         this.password = password;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
+        this.phoneNumber = phoneNumber;
         this.timestampCreated = timestampCreated;
         this.listings = listings;
     }
@@ -110,6 +112,13 @@ public class User implements UserDetails {
         this.email = email;
     }
 
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
     public Instant getTimestampCreated() {
         return timestampCreated;
     }
@@ -137,12 +146,13 @@ public class User implements UserDetails {
                 Objects.equals(firstName, user.firstName) &&
                 Objects.equals(lastName, user.lastName) &&
                 Objects.equals(email, user.email) &&
+                Objects.equals(phoneNumber, user.phoneNumber) &&
                 Objects.equals(timestampCreated, user.timestampCreated) &&
                 Objects.equals(listings, user.listings);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, username, password, firstName, lastName, email, timestampCreated, listings);
+        return Objects.hash(id, username, password, firstName, lastName, email, phoneNumber, timestampCreated, listings);
     }
 }

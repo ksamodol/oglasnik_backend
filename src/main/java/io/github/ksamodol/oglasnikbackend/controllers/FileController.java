@@ -5,19 +5,18 @@ import io.github.ksamodol.oglasnikbackend.services.FileStorageService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.io.Resource;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.print.attribute.standard.Media;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 @RestController
@@ -36,16 +35,26 @@ public class FileController {
     public HttpStatus uploadMultipleFiles(@RequestParam("files") MultipartFile[] files, @RequestParam Long listingId, Authentication authentication) {
         User user = (User) authentication.getPrincipal();
 
-        fileStorageService.storeFiles(files, listingId, user);
+        fileStorageService.storeFiles(files, listingId);
         return HttpStatus.OK;
     }
 
-    @GetMapping("/getListingFiles") //TODO: change
-    public List<String> getListingFiles(@RequestParam Long listingId){
-       return fileStorageService.getListingFiles(listingId);
+    //@GetMapping("/images/{listingId}")
+    public List<String> getImageNames(@PathVariable Long listingId){
+       return fileStorageService.getImageNames(listingId);
+    }
+    @GetMapping("/image/{listingId}/{imageName}")
+    public ResponseEntity<Resource> getListingImageById(@PathVariable Long listingId, @PathVariable String imageName){ //TODO: sanitize input
+        CacheControl cacheControl = CacheControl.maxAge(60, TimeUnit.SECONDS)
+                .noTransform()
+                .mustRevalidate();
+        return ResponseEntity.ok()
+                .cacheControl(cacheControl)
+                .contentType(MediaType.IMAGE_JPEG)
+                .body(fileStorageService.getListingImage(listingId, imageName));
     }
 
-    @GetMapping("/downloadFile/{fileName:.+}")
+    //@GetMapping("/downloadFile/{fileName:.+}")
     public ResponseEntity<Resource> downloadFile(@PathVariable String fileName, HttpServletRequest request) {
         // Load file as Resource
         Resource resource = fileStorageService.loadFileAsResource(fileName);

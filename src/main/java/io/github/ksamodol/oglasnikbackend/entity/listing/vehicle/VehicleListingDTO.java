@@ -4,6 +4,7 @@ import io.github.ksamodol.oglasnikbackend.entity.listing.ListingDTO;
 
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import java.util.List;
 
 public class VehicleListingDTO extends ListingDTO {
     private String make;
@@ -12,8 +13,8 @@ public class VehicleListingDTO extends ListingDTO {
     private int mileage;
     private int horsepower;
 
-    public VehicleListingDTO(VehicleListing vehicleListing){
-        super(vehicleListing);
+    public VehicleListingDTO(VehicleListing vehicleListing, List<String> images){
+        super(vehicleListing, images);
         this.make = vehicleListing.getMake();
         this.model = vehicleListing.getModel();
         this.year = vehicleListing.getYear();

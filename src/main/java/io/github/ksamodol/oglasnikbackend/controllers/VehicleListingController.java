@@ -2,18 +2,22 @@ package io.github.ksamodol.oglasnikbackend.controllers;
 
 import io.github.ksamodol.oglasnikbackend.entity.listing.Listing;
 import io.github.ksamodol.oglasnikbackend.entity.listing.ListingCommand;
+import io.github.ksamodol.oglasnikbackend.entity.listing.ListingDTO;
 import io.github.ksamodol.oglasnikbackend.entity.listing.vehicle.VehicleListing;
 import io.github.ksamodol.oglasnikbackend.entity.listing.vehicle.VehicleListingCommand;
 import io.github.ksamodol.oglasnikbackend.entity.listing.vehicle.VehicleListingDTO;
+import io.github.ksamodol.oglasnikbackend.security.User;
 import io.github.ksamodol.oglasnikbackend.services.ListingService;
 import net.kaczmarzyk.spring.data.jpa.domain.*;
 import net.kaczmarzyk.spring.data.jpa.web.annotation.And;
 import net.kaczmarzyk.spring.data.jpa.web.annotation.Spec;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -39,7 +43,7 @@ public class VehicleListingController {
                     @Spec(path="make", params="make", spec=Like.class),
                     @Spec(path="model", params="model", spec=Like.class),
                     @Spec(path="mileage", params="mileageMin", spec=GreaterThanOrEqual.class),
-                    @Spec(path="horsepower", params="mileageMax", spec=LessThanOrEqual.class),
+                    @Spec(path="mileage", params="mileageMax", spec=LessThanOrEqual.class),
                     @Spec(path="transmission", params="transmission", spec=EqualIgnoreCase.class)
             }) Specification<VehicleListing> specification,
             @RequestParam(defaultValue = "0") int page,
@@ -50,7 +54,20 @@ public class VehicleListingController {
 
     @PostMapping
     @Secured("ROLE_USER")
-    public ResponseEntity<VehicleListingDTO> save(@Valid @RequestBody VehicleListingCommand vehicleListingCommand, Authentication authentication){
-        return null;
+    public ResponseEntity<VehicleListingDTO> saveVehicle(
+            @Valid @RequestPart("listing") VehicleListingCommand vehicleListingCommand,
+            @RequestPart("images") MultipartFile[] images,
+            Authentication authentication){
+        User user = (User) authentication.getPrincipal();
+        return listingService.saveVehicleListing(vehicleListingCommand, images, user).map(
+                vehicleListingDTO -> ResponseEntity
+                        .status(HttpStatus.CREATED)
+                        .body(vehicleListingDTO)
+        )
+                .orElseGet(
+                        () -> ResponseEntity
+                                .status(HttpStatus.BAD_REQUEST)
+                                .build()
+                );
     }
 }

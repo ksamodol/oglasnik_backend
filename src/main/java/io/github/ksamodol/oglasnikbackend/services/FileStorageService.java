@@ -8,7 +8,8 @@ import java.util.List;
 
 public interface FileStorageService {
     public Resource loadFileAsResource(String imageName);
-    public String storeFiles(MultipartFile[] files, Long listingId, User user);
-    public List<String> getListingFiles(Long listingId);
+    public String storeFiles(MultipartFile[] files, Long listingId);
+    public List<String> getImageNames(Long listingId);
+    public Resource getListingImage(Long listingId, String imageName);
 
 }

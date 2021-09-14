@@ -1,4 +1,4 @@
-package io.github.ksamodol.oglasnikbackend.entity.listing.vehicle;
+package io.github.ksamodol.oglasnikbackend.entity.listing.property;
 
 import io.github.ksamodol.oglasnikbackend.entity.category.Category;
 import io.github.ksamodol.oglasnikbackend.entity.listing.Condition;
@@ -9,7 +9,7 @@ import javax.validation.constraints.Max;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.PositiveOrZero;
 
-public class VehicleListingCommand {
+public class PropertyListingCommand {
     @NotBlank(message = "Title can't be blank!")
     @Length(min = 5, max = 200, message = "Title can't be shorter than {min} or longer than {max} characters!")
     private String title;
@@ -22,16 +22,16 @@ public class VehicleListingCommand {
     @PositiveOrZero(message = "Place has to be a positive number!")
     private Long placeId;
     private User user;
-    @Length(max = 30, message = "Make can't be longer than {max} characters!")
-    private String make;
-    @Length(max = 30, message = "Model can't be longer than {max} characters!")
-    private String model;
     @PositiveOrZero
-    private int year;
+    private int insideArea;
     @PositiveOrZero
-    private int mileage;
+    private int outsideArea;
     @PositiveOrZero
-    private int horsepower;
+    private int floors;
+    @PositiveOrZero
+    private int yearBuilt;
+    @PositiveOrZero
+    private int numberOfRooms;
 
     public String getTitle() {
         return title;
@@ -61,23 +61,23 @@ public class VehicleListingCommand {
         return user;
     }
 
-    public String getMake() {
-        return make;
+    public int getInsideArea() {
+        return insideArea;
     }
 
-    public String getModel() {
-        return model;
+    public int getOutsideArea() {
+        return outsideArea;
     }
 
-    public int getYear() {
-        return year;
+    public int getFloors() {
+        return floors;
     }
 
-    public int getMileage() {
-        return mileage;
+    public int getYearBuilt() {
+        return yearBuilt;
     }
 
-    public int getHorsepower() {
-        return horsepower;
+    public int getNumberOfRooms() {
+        return numberOfRooms;
     }
 }

@@ -46,6 +46,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         user.setUsername(userCommand.getUsername());
         user.setPassword(userCommand.getPassword());
         user.setEmail(userCommand.getEmail());
+        user.setPhoneNumber(userCommand.getPhoneNumber());
         user.setFirstName(userCommand.getFirstName());
         user.setLastName(userCommand.getLastName());
         user.setTimestampCreated(Instant.now());

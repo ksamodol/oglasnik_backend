@@ -3,6 +3,7 @@ package io.github.ksamodol.oglasnikbackend.entity.listing;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 public class ListingDTO {
     private Long id;
@@ -15,21 +16,11 @@ public class ListingDTO {
     private String countyName;
     private String placeName;
     private String userUsername;
+    private String userPhoneNumber;
+    private List<String> images;
 
 
-    public ListingDTO(Long id, String title, String description, String condition, Long price, String timestampCreated, String category, String countyName, String placeName, String userUsername) {
-        this.id = id;
-        this.title = title;
-        this.description = description;
-        this.condition = condition;
-        this.price = price;
-        this.timestampCreated = timestampCreated;
-        this.category = category;
-        this.countyName = countyName;
-        this.placeName = placeName;
-        this.userUsername = userUsername;
-    }
-    public <T extends Listing> ListingDTO(T listing){
+    public <T extends Listing> ListingDTO(T listing, List<String> images){
         this.id = listing.getId();
         this.title = listing.getTitle();
         this.description = listing.getDescription();
@@ -40,6 +31,8 @@ public class ListingDTO {
         this.countyName = listing.getPlace().getCounty().getName();
         this.placeName = listing.getPlace().getName();
         this.userUsername = listing.getUser().getUsername();
+        this.userPhoneNumber = listing.getUser().getPhoneNumber();
+        this.images = images;
     }
 
     public Long getId() {
@@ -77,5 +70,13 @@ public class ListingDTO {
     }
     public String getUserUsername(){
         return userUsername;
+    }
+
+    public String getUserPhoneNumber() {
+        return userPhoneNumber;
+    }
+
+    public List<String> getImages() {
+        return images;
     }
 }
